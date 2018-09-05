@@ -1,2 +1,5 @@
-# camunda-zipkin-springboot-demo
-POC using Spring Boot to show that you also trace whole workflows from Camunda with Zipkin. 
+
+
+# Thoughts / Open discussions
+
+- Which requests to sample? Can we start when we have incidents? But that's probably too late? 
