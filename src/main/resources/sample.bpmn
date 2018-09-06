@@ -10,14 +10,14 @@
       <bpmn:outgoing>SequenceFlow_1rh5gmb</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="ServiceTask_0ni4ixa" name="Call REST&#10;Service B" camunda:asyncBefore="true" camunda:delegateExpression="#{serviceBDelegate}">
-      <bpmn:incoming>SequenceFlow_1rh5gmb</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_167m3rs</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="EndEvent_1fxwbj8">
       <bpmn:incoming>SequenceFlow_167m3rs</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1rh5gmb</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_167m3rs" sourceRef="ServiceTask_0ni4ixa" targetRef="EndEvent_1fxwbj8" />
-    <bpmn:sequenceFlow id="SequenceFlow_1rh5gmb" sourceRef="Task_02c0hv7" targetRef="ServiceTask_0ni4ixa" />
+    <bpmn:sequenceFlow id="SequenceFlow_1rh5gmb" sourceRef="Task_02c0hv7" targetRef="EndEvent_1fxwbj8" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="sample">
@@ -42,8 +42,9 @@
         <di:waypoint x="616" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_1rh5gmb_di" bpmnElement="SequenceFlow_1rh5gmb">
-        <di:waypoint x="352" y="120" />
-        <di:waypoint x="457" y="120" />
+        <di:waypoint x="352" y="150" />
+        <di:waypoint x="526" y="255" />
+        <di:waypoint x="623" y="134" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
