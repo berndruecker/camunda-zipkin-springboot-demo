@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1mzoer3" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.0.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1mzoer3" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.2.3">
   <bpmn:process id="sample" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>SequenceFlow_1w5qb4a</bpmn:outgoing>
@@ -7,17 +7,17 @@
     <bpmn:sequenceFlow id="SequenceFlow_1w5qb4a" sourceRef="StartEvent_1" targetRef="Task_02c0hv7" />
     <bpmn:serviceTask id="Task_02c0hv7" name="Call REST&#10;Service A" camunda:asyncBefore="true" camunda:delegateExpression="#{serviceADelegate}">
       <bpmn:incoming>SequenceFlow_1w5qb4a</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1rh5gmb</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_190nazn</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:serviceTask id="ServiceTask_0ni4ixa" name="Call REST&#10;Service B" camunda:asyncBefore="true" camunda:delegateExpression="#{serviceBDelegate}">
+      <bpmn:incoming>SequenceFlow_190nazn</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_167m3rs</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="EndEvent_1fxwbj8">
       <bpmn:incoming>SequenceFlow_167m3rs</bpmn:incoming>
-      <bpmn:incoming>SequenceFlow_1rh5gmb</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_167m3rs" sourceRef="ServiceTask_0ni4ixa" targetRef="EndEvent_1fxwbj8" />
-    <bpmn:sequenceFlow id="SequenceFlow_1rh5gmb" sourceRef="Task_02c0hv7" targetRef="EndEvent_1fxwbj8" />
+    <bpmn:sequenceFlow id="SequenceFlow_190nazn" sourceRef="Task_02c0hv7" targetRef="ServiceTask_0ni4ixa" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="sample">
@@ -41,10 +41,9 @@
         <di:waypoint x="557" y="120" />
         <di:waypoint x="616" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_1rh5gmb_di" bpmnElement="SequenceFlow_1rh5gmb">
-        <di:waypoint x="352" y="150" />
-        <di:waypoint x="526" y="255" />
-        <di:waypoint x="623" y="134" />
+      <bpmndi:BPMNEdge id="SequenceFlow_190nazn_di" bpmnElement="SequenceFlow_190nazn">
+        <di:waypoint x="352" y="120" />
+        <di:waypoint x="457" y="120" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
