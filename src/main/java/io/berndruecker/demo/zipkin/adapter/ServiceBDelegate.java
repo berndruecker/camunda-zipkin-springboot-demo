@@ -23,17 +23,21 @@ public class ServiceBDelegate implements JavaDelegate {
   private Tracing tracing;
 
   public void execute(DelegateExecution ctx) throws Exception {
-    restoreTracingContext(ctx);
+    Span span = restoreTracingContext(ctx);
 
     String response = rest.getForObject(serviceBUrl, String.class);
     ctx.setVariable("serviceBResponse", response);
+    
+//    span.finish();
   }
   
-  private void restoreTracingContext(DelegateExecution ctx) {
+  private Span restoreTracingContext(DelegateExecution ctx) {
     Map<String, String> tracingContextSerialized = (Map<String, String>) ctx.getVariable("X-SLEUTH-TRACE-CONTEXT");
     Extractor<Map<String, String>> extractor = tracing.propagation().extractor(Map<String, String>::get);
-    Span span = tracing.tracer().nextSpan(extractor.extract(tracingContextSerialized));
+    Span span = tracing.tracer().joinSpan(extractor.extract(tracingContextSerialized).context());
+//    Span span = tracing.tracer().nextSpan(extractor.extract(tracingContextSerialized));
     tracing.tracer().withSpanInScope(span);
+    return span;
   }  
 
 }

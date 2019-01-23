@@ -40,10 +40,8 @@ public class SampleRestController {
 //     rest.getForObject("http://localhost:8080/serviceB", String.class);
     
     VariableMap variables = Variables.createVariables();
-    
-    captureTracingContext(variables);
-    
-    workflowInstance(variables);
+        
+    startWorkflowInstance(variables);
 
     return ""; //"{\"traceId\": \"" + context.traceIdString() + "\"}";
   }
@@ -52,22 +50,32 @@ public class SampleRestController {
   private Tracing tracer;
   
 //  @NewSpan
-  private void workflowInstance(VariableMap variables) {
-    ScopedSpan newSpan = tracer.tracer().startScopedSpan("workflowInstance");
-//    this.tracer.tracer().nextSpan().name("workflowInstance").start();
+  private void startWorkflowInstance(VariableMap variables) {
+//    ScopedSpan newSpan = tracer.tracer().startScopedSpan("workflowInstance");
+//    tracer.tracer().currentSpan().
+    Span span = this.tracer.tracer().nextSpan().name("workflowInstance");
+//    this.tracer.tracer().joinSpan(span.context());
+   
+    Map<String,String> tracingContextSerialized = new HashMap<String,String>();
+    Injector<Map<String,String>> injector = tracing.propagation().injector(Map<String,String>::put);
+    injector.inject(span.context(), tracingContextSerialized);
+    variables.putValue("X-SLEUTH-TRACE-CONTEXT", tracingContextSerialized);
+
+   
+    span.start();
+//    span.annotate("start");
+    span.flush();
+    
+    // capture with new span
+//    captureTracingContext(variables);
+
     camunda.getRuntimeService().startProcessInstanceByKey("sample", variables);
    // newSpan.finish();
   }
 
-  private Map<String,String> serializeTracingContext() {      
-    Map<String,String> tracingContextSerialized = new HashMap<String,String>();
-    Injector<Map<String,String>> injector = tracing.propagation().injector(Map<String,String>::put);
-    injector.inject(tracing.currentTraceContext().get(), tracingContextSerialized);
-    return tracingContextSerialized;
-}
-
   private void captureTracingContext(VariableMap variables) {
-    variables.putValue("X-SLEUTH-TRACE-CONTEXT", serializeTracingContext());
+    Map<String, String> serializeTracingContext = serializeTracingContext();
+    variables.putValue("X-SLEUTH-TRACE-CONTEXT", serializeTracingContext);
     
     // JUst FYI
 /*    TraceContext context = tracing.currentTraceContext().get();
@@ -76,5 +84,13 @@ public class SampleRestController {
       .putValue("X-SLEUTH-TRACE-ID-HIGH", context.traceIdHigh())
       .putValue("X-SLEUTH-SPAN-ID", context.spanId());*/
   }  
+  
+  private Map<String,String> serializeTracingContext() {      
+    Map<String,String> tracingContextSerialized = new HashMap<String,String>();
+    Injector<Map<String,String>> injector = tracing.propagation().injector(Map<String,String>::put);
+    injector.inject(tracing.currentTraceContext().get(), tracingContextSerialized);
+    return tracingContextSerialized;
+  }
+
 
 }
