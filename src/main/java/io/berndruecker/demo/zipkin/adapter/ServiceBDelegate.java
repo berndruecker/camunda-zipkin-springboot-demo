@@ -34,7 +34,7 @@ public class ServiceBDelegate implements JavaDelegate {
   private Span restoreTracingContext(DelegateExecution ctx) {
     Map<String, String> tracingContextSerialized = (Map<String, String>) ctx.getVariable("X-SLEUTH-TRACE-CONTEXT");
     Extractor<Map<String, String>> extractor = tracing.propagation().extractor(Map<String, String>::get);
-    Span span = tracing.tracer().joinSpan(extractor.extract(tracingContextSerialized).context());
+    Span span = tracing.tracer().toSpan(extractor.extract(tracingContextSerialized).context());
 //    Span span = tracing.tracer().nextSpan(extractor.extract(tracingContextSerialized));
     tracing.tracer().withSpanInScope(span);
     return span;

@@ -11,19 +11,20 @@
     </bpmn:serviceTask>
     <bpmn:serviceTask id="ServiceTask_0ni4ixa" name="Call REST&#10;Service B" camunda:asyncBefore="true" camunda:delegateExpression="#{serviceBDelegate}">
       <bpmn:incoming>SequenceFlow_0kiwsne</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_190nazn</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_167m3rs</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:endEvent id="EndEvent_1fxwbj8">
       <bpmn:extensionElements>
-        <camunda:executionListener delegateExpression="#{endListener}" event="start" />
+        <camunda:executionListener delegateExpression="#{endListener}" event="end" />
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1k8nmxq</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_167m3rs</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_167m3rs" sourceRef="ServiceTask_0ni4ixa" targetRef="IntermediateThrowEvent_170wzre" />
-    <bpmn:sequenceFlow id="SequenceFlow_190nazn" sourceRef="Task_02c0hv7" targetRef="IntermediateThrowEvent_1bl9013" />
+    <bpmn:sequenceFlow id="SequenceFlow_167m3rs" sourceRef="ServiceTask_0ni4ixa" targetRef="EndEvent_1fxwbj8" />
+    <bpmn:sequenceFlow id="SequenceFlow_190nazn" sourceRef="Task_02c0hv7" targetRef="ServiceTask_0ni4ixa" />
     <bpmn:sequenceFlow id="SequenceFlow_0kiwsne" sourceRef="IntermediateThrowEvent_1bl9013" targetRef="ServiceTask_0ni4ixa" />
     <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_1bl9013" name="5 minutes">
-      <bpmn:incoming>SequenceFlow_190nazn</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0kiwsne</bpmn:outgoing>
       <bpmn:timerEventDefinition>
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT5M</bpmn:timeDuration>
@@ -31,10 +32,9 @@
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1k8nmxq" sourceRef="IntermediateThrowEvent_170wzre" targetRef="EndEvent_1fxwbj8" />
     <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_170wzre" name="2 minutes">
-      <bpmn:incoming>SequenceFlow_167m3rs</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1k8nmxq</bpmn:outgoing>
       <bpmn:timerEventDefinition>
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT2M</bpmn:timeDuration>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1M</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
   </bpmn:process>
@@ -57,12 +57,14 @@
         <dc:Bounds x="850" y="102" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_167m3rs_di" bpmnElement="SequenceFlow_167m3rs">
-        <di:waypoint x="641" y="120" />
-        <di:waypoint x="723" y="120" />
+        <di:waypoint x="641" y="105" />
+        <di:waypoint x="712" y="83" />
+        <di:waypoint x="851" y="116" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_190nazn_di" bpmnElement="SequenceFlow_190nazn">
-        <di:waypoint x="352" y="120" />
-        <di:waypoint x="432" y="120" />
+        <di:waypoint x="352" y="100" />
+        <di:waypoint x="426" y="70" />
+        <di:waypoint x="541" y="112" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_0kiwsne_di" bpmnElement="SequenceFlow_0kiwsne">
         <di:waypoint x="468" y="120" />

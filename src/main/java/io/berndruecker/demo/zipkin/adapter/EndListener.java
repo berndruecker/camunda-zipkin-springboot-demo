@@ -28,6 +28,7 @@ public class EndListener implements JavaDelegate {
 //    Span span = tracing.tracer().joinSpan(extract.context());
     Span span = tracing.tracer().toSpan(extract.context());
     tracing.tracer().withSpanInScope(span);
+    
 //    tracing.tracer().currentSpanCustomizer();
     // NOPE - that would be a new span: Span span = tracing.tracer().nextSpan(extract);
 //    span.annotate("end");
